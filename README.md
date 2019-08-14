@@ -1,5 +1,7 @@
 # Dynamo Simplicity for Golang
 
+<img src="https://storage.googleapis.com/gopherizeme.appspot.com/gophers/a86a9d910d524a2c7a8d56570e36cccb16e308e2.png" width="200">
+
 ## Library for simple _put, get, delete, getList_
 
 ### Example of using the library
