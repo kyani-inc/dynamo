@@ -36,14 +36,14 @@ func main() {
 	}
 
 	// Get single item and fill struct
-	err = dynamo.GetItem(tableName, map[string]string{"id": "123a"}, &bicycle)
+	err = dynamo.GetItem(tableName, map[string]interface{}{"id": "123a"}, &bicycle)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Get list of items with gear of 12
-	err = dynamo.GetItemList(tableName, map[string]string{"gear": "12"}, &bicycles)
+	err = dynamo.GetItemList(tableName, map[string]interface{}{"gear": "12"}, &bicycles)
 
 	if err != nil {
 		log.Fatal(err)
