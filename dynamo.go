@@ -6,6 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
+	"strconv"
+	"time"
 )
 
 var DB *dynamodb.DynamoDB
@@ -33,7 +35,7 @@ func Delete(tableName, key, value string) (err error) {
 	return
 }
 
-func Put(tableName string, item interface{}, ttl string) (err error) {
+func Put(tableName string, item interface{}, ttl time.Duration) (err error) {
 	i, err := dynamodbattribute.MarshalMap(item)
 
 	input := &dynamodb.PutItemInput{
@@ -41,8 +43,13 @@ func Put(tableName string, item interface{}, ttl string) (err error) {
 		TableName: aws.String(tableName),
 	}
 
-	if ttl != "" {
-		input.Item["ttl"] = &dynamodb.AttributeValue{N: aws.String(ttl)}
+	duration := int(ttl.Seconds())
+	currentTime := int(time.Now().Unix())
+	currentTime += duration
+	formattedTtl := strconv.Itoa(currentTime)
+
+	if ttl != 0 {
+		input.Item["ttl"] = &dynamodb.AttributeValue{N: aws.String(formattedTtl)}
 	}
 
 	_, err = DB.PutItem(input)

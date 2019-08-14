@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/catmullet/dynamo"
 	"log"
+	"time"
 )
 
 const tableName = "bicycle"
@@ -19,7 +20,7 @@ func main() {
 	bicycles := []Bicycle{}
 
 	// Save Item to Dynamo using table, the struct and ttl if desired
-	err := dynamo.Put(tableName, bicycle, "")
+	err := dynamo.Put(tableName, bicycle, 48*time.Hour)
 
 	if err != nil {
 		log.Fatal(err)
