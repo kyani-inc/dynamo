@@ -56,7 +56,7 @@ func Put(tableName string, item interface{}, ttl time.Duration) (err error) {
 	return
 }
 
-func GetItem(tableName string, keys map[string]string, object interface{}) (err error) {
+func GetItem(tableName string, keys map[string]interface{}, object interface{}) (err error) {
 
 	builder := expression.NewBuilder()
 
@@ -93,7 +93,7 @@ func GetItem(tableName string, keys map[string]string, object interface{}) (err 
 	return
 }
 
-func GetItemList(tableName string, keys map[string]string, object interface{}) (err error) {
+func GetItemList(tableName string, keys map[string]interface{}, object interface{}) (err error) {
 
 	builder := expression.NewBuilder()
 
