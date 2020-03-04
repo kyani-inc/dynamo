@@ -82,7 +82,7 @@ func GetItem(tableName string, keys map[string]interface{}, object interface{}) 
 		FilterExpression:          expr.Filter(),
 		ProjectionExpression:      expr.Projection(),
 		TableName:                 aws.String(tableName),
-		Limit: 0
+		Limit: 0,
 	}
 
 	out, err := DB.Scan(params)
