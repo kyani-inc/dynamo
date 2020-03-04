@@ -90,12 +90,13 @@ func GetItem(tableName string, keys map[string]interface{}, object interface{}, 
 
 	out, err := DB.Scan(params)
 
-	if out.LastEvaluatedKey != nil {
-		return GetItem(tableName, keys, &object, out.LastEvaluatedKey)
-	}
-
 	if len(out.Items) > 0 {
 		dynamodbattribute.UnmarshalMap(out.Items[0], &object)
+		return
+	}
+
+	if out.LastEvaluatedKey != nil {
+		return GetItem(tableName, keys, &object, out.LastEvaluatedKey)
 	}
 
 	return
