@@ -56,7 +56,7 @@ func Put(tableName string, item interface{}, ttl time.Duration) (err error) {
 	return
 }
 
-func GetItem(tableName string, keys map[string]interface{}, object interface{}) (err error) {
+func GetItem(tableName string, keys map[string]interface{}, object interface{}, lastScannedKey ...map[string]*dynamodb.AttributeValue) (err error) {
 
 	builder := expression.NewBuilder()
 
@@ -84,10 +84,19 @@ func GetItem(tableName string, keys map[string]interface{}, object interface{}) 
 		TableName:                 aws.String(tableName),
 	}
 
+	if len(lastScannedKey) > 0 {
+		params.ExclusiveStartKey = lastScannedKey[0]
+	}
+
 	out, err := DB.Scan(params)
 
 	if len(out.Items) > 0 {
 		dynamodbattribute.UnmarshalMap(out.Items[0], &object)
+		return
+	}
+
+	if out.LastEvaluatedKey != nil {
+		return GetItem(tableName, keys, &object, out.LastEvaluatedKey)
 	}
 
 	return
